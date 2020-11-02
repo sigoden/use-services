@@ -36,7 +36,7 @@ export async function initAllServices<
     try {
       const option = options[srvName];
       const srv = await option.init(config, option.args, option.ctor);
-      emitter.emit(`${NAME}.init.${srvName}`);
+      emitter.emit(`${NAME}.init.${srvName}`, { srv });
       srvs[srvName] = srv;
     } catch (error) {
       emitter.emit(`${NAME}.error`, { srvName, error });
