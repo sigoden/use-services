@@ -17,7 +17,7 @@ export interface InitFn<A, S> {
   (config: Config, args: A, ctor?: Ctor<S>): Promise<S>;
 }
 
-export interface ServiceOption<A, S, D> {
+export interface ServiceOption<A, S, D = undefined> {
   init: InitFn<A, S>;
   args: A;
   ctor?: Ctor<S>;
