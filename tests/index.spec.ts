@@ -1,9 +1,8 @@
-import { Config, ServiceOption, Services } from "../src";
+import {  InitOption, ServiceOption, Services } from "../src";
 
-export type Service<S> = S;
 
-export async function init<A>(config: Config, args: A): Promise<Service<A>> {
-  return args;
+export async function init<A>(options: InitOption<A, A>): Promise<A> {
+  return options.args;
 }
 
 const settings =  {

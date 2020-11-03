@@ -1,6 +1,6 @@
 {
   "name": "use-services",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Use services gracefully",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -17,7 +17,9 @@
     "clean": "rimraf dist",
     "prepublish": "npm run -s clean && npm run -s build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "p-event": "^4.2.0"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
