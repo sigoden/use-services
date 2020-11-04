@@ -1,8 +1,11 @@
 import { EventEmitter } from "events";
 import * as pEvent from "p-event";
+import * as debug from "debug";
 
-export let SERVICE_NAME = "service";
+export let SERVICE_NAME = "use-services";
 export const STOP_KEY = "__stop__";
+
+const dbg = debug(SERVICE_NAME);
 
 export interface InitOption<A, S> {
   app: string;
@@ -35,9 +38,11 @@ export type Services<T> = {[K in keyof T]: ExtractService<T[K]>};
 export async function useServices<
   O extends {[k: string]: ServiceOption<any, any>}
 >(srvs: Services<O>, app: string, emitter: EventEmitter, options: O): Promise<() => Promise<void>> {
+  dbg("init");
   emitter.emit(eventNames.init);
   const srvDepents = {};
   await Promise.all(Object.keys(options).map(async srvName => {
+    dbg("%s init", srvName);
     try {
       const { deps, args, init, ctor } = options[srvName];
       const option: InitOption<any, any> = {
@@ -59,15 +64,20 @@ export async function useServices<
       const srv = await init(option);
       (srvs as any)[srvName] = srv;
       emitter.emit(eventNames.srvInit(srvName), { srv });
+      dbg("%s is ready", srvName);
     } catch (error) {
+      dbg("%s is fail to init", srvName);
       emitter.emit(eventNames.error, { srvName, error });
       throw error;
     }
   }));
+  dbg("initAll");
   emitter.emit(`${SERVICE_NAME}.initAll`);
   const stop = async () => {
+    dbg("stop");
     emitter.emit(eventNames.stop);
     await Promise.all(Object.keys(srvs).map(async srvName => {
+      dbg("%s is stopping", srvName);
       const srv = srvs[srvName];
       try {
         if (srvDepents[srvName]) await Promise.all(srvDepents[srvName].map(depent => pEvent(emitter, eventNames.srvStop(depent))));
@@ -75,11 +85,14 @@ export async function useServices<
           await srv[STOP_KEY]();
         }
         emitter.emit(eventNames.srvStop(srvName));
+        dbg("%s is stopped", srvName);
       } catch (error) {
+        dbg("%s is fail to stop", srvName);
         emitter.emit(eventNames.error, { srvName, error });
         throw error;
       }
     }));
+    dbg("stopAll");
     emitter.emit(eventNames.stop);
   };
   return stop
