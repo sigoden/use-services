@@ -1,6 +1,6 @@
 {
   "name": "use-services",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "Use services gracefully",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "npx eslint . --ext ts",
+    "lint": "npx eslint .",
     "test": "npx jest -c jest.config.js",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist",

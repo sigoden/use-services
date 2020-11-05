@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import * as pEvent from "p-event";
 import * as debug from "debug";
 
-export let SERVICE_NAME = "use-services";
+export const SERVICE_NAME = "use-services";
 export const STOP_KEY = "__stop__";
 
 const dbg = debug(SERVICE_NAME);
@@ -11,7 +11,7 @@ export interface InitOption<A, S> {
   app: string;
   srvName: string;
   emitter: EventEmitter;
-  args: A,
+  args: A;
   deps: any[];
   ctor: Ctor<S>;
 }
@@ -28,7 +28,7 @@ export interface ServiceOption<A, S> {
   init: InitFn<A, S>;
   args: A;
   ctor?: Ctor<S>;
-  deps?: string[],
+  deps?: string[];
 }
 
 type ExtractService<Type> = Type extends ServiceOption<infer A, infer S> ? S : never;
@@ -46,12 +46,12 @@ export async function useServices<
     try {
       const { deps, args, init, ctor } = options[srvName];
       const option: InitOption<any, any> = {
-          app,
-          emitter,
-          srvName,
-          deps: [],
-          ctor,
-          args,
+        app,
+        emitter,
+        srvName,
+        deps: [],
+        ctor,
+        args,
       };
       option.deps = await Promise.all((deps || []).map(async depName => {
         if (!options[depName]) throw new Error(`service ${depName} is depent by ${srvName}.deps.${depName} but missed`);
@@ -67,6 +67,7 @@ export async function useServices<
     } catch (error) {
       dbg("%s is fail to init", srvName);
       emitter.emit(eventNames.error, { srvName, error });
+      error.message = `${srvName}: ${error.message}`;
       throw error;
     }
   }));
@@ -94,7 +95,7 @@ export async function useServices<
     dbg("stopAll");
     emitter.emit(eventNames.stopAll);
   };
-  return stop
+  return stop;
 }
 
 export const eventNames = {
@@ -105,6 +106,6 @@ export const eventNames = {
   srvStop: srvName => `${SERVICE_NAME}.stop.${srvName}`,
   error: `${SERVICE_NAME}.error`,
   stopAll: `${SERVICE_NAME}.stopAll`,
-}
+};
 
 export default useServices;
