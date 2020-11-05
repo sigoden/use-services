@@ -53,13 +53,12 @@ export async function useServices<
           ctor,
           args,
       };
-      await Promise.all((deps || []).map(async depName => {
-        const srv = deps[depName];
-        if (!options[srv]) throw new Error(`service ${srv} is depent by ${srvName}.deps.${depName} but missed`);
-        await pEvent(option.emitter, eventNames.srvInit(srv))
-        if (!srvDepents[srv]) srvDepents[srv] = [];
-        srvDepents[srv].push(srvName);
-        option.deps.push(srv);
+      option.deps = await Promise.all((deps || []).map(async depName => {
+        if (!options[depName]) throw new Error(`service ${depName} is depent by ${srvName}.deps.${depName} but missed`);
+        await pEvent(option.emitter, exports.eventNames.srvInit(depName));
+        if (!srvDepents[depName]) srvDepents[depName] = [];
+        srvDepents[depName].push(srvName);
+        return srvs[depName];
       }));
       const srv = await init(option);
       (srvs as any)[srvName] = srv;
