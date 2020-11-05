@@ -71,7 +71,7 @@ export async function useServices<
     }
   }));
   dbg("initAll");
-  emitter.emit(`${SERVICE_NAME}.initAll`);
+  emitter.emit(eventNames.initAll);
   const stop = async () => {
     dbg("stop");
     emitter.emit(eventNames.stop);
@@ -92,17 +92,19 @@ export async function useServices<
       }
     }));
     dbg("stopAll");
-    emitter.emit(eventNames.stop);
+    emitter.emit(eventNames.stopAll);
   };
   return stop
 }
 
 export const eventNames = {
   init: `${SERVICE_NAME}.init`,
+  initAll: `${SERVICE_NAME}.initAll`,
   stop: `${SERVICE_NAME}.stop`,
   srvInit: srvName => `${SERVICE_NAME}.init.${srvName}`,
   srvStop: srvName => `${SERVICE_NAME}.stop.${srvName}`,
   error: `${SERVICE_NAME}.error`,
+  stopAll: `${SERVICE_NAME}.stopAll`,
 }
 
 export default useServices;

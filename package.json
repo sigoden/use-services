@@ -1,6 +1,6 @@
 {
   "name": "use-services",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "Use services gracefully",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
