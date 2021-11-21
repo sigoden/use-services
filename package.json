@@ -19,8 +19,8 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "npx eslint .",
-    "test": "npx jest",
+    "lint": "eslint .",
+    "test": "jest",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run -s clean && npm run -s build"
