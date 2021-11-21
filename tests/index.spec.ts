@@ -1,5 +1,4 @@
-import useServices, { InitOption, ServiceOption, Services } from "../src";
-import { EventEmitter } from "events";
+import useServices, { InitOption, ServiceOption } from "../src";
 
 export async function init<A>(options: InitOption<A, A>): Promise<A> {
   return options.args;
@@ -16,10 +15,8 @@ const options = {
   } as ServiceOption<typeof settings, typeof settings>,
 };
 
-const srvs: Services<typeof options> = {} as any;
-
 test("it works", async () => {
-  const emitter = new EventEmitter();
-  await useServices(srvs, "app", emitter, options);
+  const { srvs, init } = useServices("test", options);
+  await init();
   expect(srvs.settings.k).toEqual("v");
 });
