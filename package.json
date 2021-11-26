@@ -1,6 +1,6 @@
 {
   "name": "use-services",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Use services gracefully",
   "keywords": [],
   "author": "Sigoden Huang <sigoden@gmail.com> (https://sigoden.com/)",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "debug": "^4.3.2",
-    "p-event": "^5.0.1"
+    "p-event": "^4"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
@@ -37,7 +37,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
-    "jest-esm-transformer": "^1.0.0",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",

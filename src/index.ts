@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { pEvent } from "p-event";
+import pEvent from "p-event";
 import * as debug from "debug";
 
 export const SERVICE_NAME = "use-services";
