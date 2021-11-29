@@ -70,7 +70,7 @@ export default function useServices<
                 throw new Error(
                   `service ${depName} is depent by ${srvName}.deps.${depName} but missed`
                 );
-              await pEvent(option.emitter, exports.eventNames.srvInit(depName));
+              await pEvent(option.emitter, SERVICES_EVENTS.SRV_INIT(depName));
               if (!srvDepents[depName]) srvDepents[depName] = [];
               srvDepents[depName].push(srvName);
               return srvs[depName];
